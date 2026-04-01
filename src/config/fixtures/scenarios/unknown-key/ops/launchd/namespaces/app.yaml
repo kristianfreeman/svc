@@ -1,0 +1,13 @@
+schemaVersion: "1"
+namespace: app
+owner:
+  team: platform
+  contact: platform@example.com
+services:
+  - label: com.example.app
+    domain: gui
+    user: kristian
+    program: /usr/bin/env
+    programArguments:
+      - /usr/bin/env
+      - "true"

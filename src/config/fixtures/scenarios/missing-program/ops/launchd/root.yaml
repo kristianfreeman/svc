@@ -1,0 +1,7 @@
+schemaVersion: "1"
+managedBy: svc
+defaults:
+  domain: gui
+namespaces:
+  app:
+    enabled: true

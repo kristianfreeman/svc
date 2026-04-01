@@ -1,0 +1,13 @@
+schemaVersion: "1"
+managedBy: svc
+ownershipPrefixes:
+  - com.example.
+defaults:
+  domain: gui
+  runAtLoad: true
+  keepAlive: true
+namespaces:
+  api:
+    enabled: true
+  workers:
+    enabled: false

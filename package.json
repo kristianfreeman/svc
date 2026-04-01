@@ -1,0 +1,65 @@
+{
+  "name": "svc",
+  "version": "0.1.0",
+  "description": "Declarative macOS launchd management CLI",
+  "type": "module",
+  "bin": "dist/cli.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./src": {
+      "types": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./src/*": {
+      "types": "./src/*.ts",
+      "default": "./src/*.ts"
+    }
+  },
+  "files": [
+    "src",
+    "dist",
+    "schemas",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "rm -rf dist *.tsbuildinfo && tsc && chmod +x dist/cli.js",
+    "schema:generate": "tsx src/scripts/generate-json-schemas.ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit",
+    "validate": "tsx src/cli.ts validate --all",
+    "validate:fixtures": "tsx src/scripts/validate-fixtures.ts",
+    "prepublishOnly": "pnpm build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kristianfreeman/svc.git",
+    "directory": "."
+  },
+  "homepage": "https://github.com/kristianfreeman/svc#readme",
+  "bugs": {
+    "url": "https://github.com/kristianfreeman/svc/issues"
+  },
+  "keywords": [
+    "launchd",
+    "macos",
+    "cli",
+    "declarative",
+    "operations"
+  ],
+  "devDependencies": {
+    "@types/node": "^24.6.1",
+    "goke": "^6.3.2",
+    "tsx": "^4.20.5",
+    "typescript": "^5.9.3",
+    "vitest": "^3.2.4",
+    "yaml": "^2.8.1",
+    "zod": "^4.1.11"
+  }
+}

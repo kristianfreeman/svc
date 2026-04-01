@@ -1,0 +1,85 @@
+{
+  "$id": "https://svc.dev/schemas/root.schema.json",
+  "description": "svc root launchd configuration schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1"
+    },
+    "managedBy": {
+      "default": "svc",
+      "type": "string",
+      "minLength": 1
+    },
+    "ownershipPrefixes": {
+      "default": [],
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "defaults": {
+      "default": {},
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string",
+          "enum": [
+            "user",
+            "gui"
+          ]
+        },
+        "runAtLoad": {
+          "type": "boolean"
+        },
+        "keepAlive": {
+          "type": "boolean"
+        },
+        "workingDirectory": {
+          "type": "string",
+          "minLength": 1
+        },
+        "environment": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string"
+          },
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "namespaces": {
+      "type": "object",
+      "propertyNames": {
+        "type": "string"
+      },
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "default": true,
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "enabled"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "managedBy",
+    "ownershipPrefixes",
+    "defaults",
+    "namespaces"
+  ],
+  "additionalProperties": false
+}

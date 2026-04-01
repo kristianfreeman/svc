@@ -1,0 +1,17 @@
+schemaVersion: "1"
+namespace: app
+owner:
+  team: platform
+  contact: platform@example.com
+services:
+  - label: com.example.app
+    domain: gui
+    user: kristian
+    program: /usr/local/bin/node
+    programArguments:
+      - /usr/local/bin/node
+      - /tmp/app.js
+    environment:
+      APP_ENV: production
+    runAtLoad: true
+    keepAlive: true

@@ -1,0 +1,16 @@
+schemaVersion: "1"
+namespace: app
+owner:
+  team: platform
+  contact: platform@example.com
+services:
+  - label: com.example.invalid
+    domain: gui
+    programArguments:
+      - relative/path.js
+    environment:
+      bad-key: value
+    health:
+      type: http
+      intervalSeconds: 10
+      timeoutSeconds: 2

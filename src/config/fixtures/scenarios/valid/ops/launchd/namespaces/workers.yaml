@@ -1,0 +1,16 @@
+schemaVersion: "1"
+namespace: workers
+owner:
+  team: platform
+  contact: platform@example.com
+services:
+  - label: com.example.worker
+    domain: gui
+    user: kristian
+    program: /usr/bin/env
+    programArguments:
+      - /usr/bin/env
+      - echo
+      - hello
+    environment:
+      WORKER_MODE: queue

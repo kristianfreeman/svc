@@ -1,0 +1,16 @@
+schemaVersion: "1"
+namespace: api
+owner:
+  team: platform
+  contact: platform@example.com
+services:
+  - label: com.example.api
+    domain: gui
+    user: you
+    program: /usr/local/bin/node
+    programArguments:
+      - /usr/local/bin/node
+      - /srv/api/server.js
+    environment:
+      APP_ENV: production
+      LOG_LEVEL: info

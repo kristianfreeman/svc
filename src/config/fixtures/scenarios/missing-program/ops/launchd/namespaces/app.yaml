@@ -1,0 +1,11 @@
+schemaVersion: "1"
+namespace: app
+owner:
+  team: platform
+  contact: platform@example.com
+services:
+  - label: com.example.missing.program
+    domain: gui
+    user: kristian
+    environment:
+      APP_ENV: test

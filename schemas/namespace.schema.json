@@ -1,0 +1,148 @@
+{
+  "$id": "https://svc.dev/schemas/namespace.schema.json",
+  "description": "svc namespace launchd configuration schema",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1"
+    },
+    "namespace": {
+      "type": "string",
+      "minLength": 1
+    },
+    "owner": {
+      "type": "object",
+      "properties": {
+        "team": {
+          "type": "string",
+          "minLength": 1
+        },
+        "contact": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "team",
+        "contact"
+      ],
+      "additionalProperties": false
+    },
+    "services": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "label": {
+            "type": "string",
+            "minLength": 3
+          },
+          "domain": {
+            "type": "string",
+            "enum": [
+              "user",
+              "gui"
+            ]
+          },
+          "user": {
+            "type": "string",
+            "minLength": 1
+          },
+          "disabled": {
+            "default": false,
+            "type": "boolean"
+          },
+          "program": {
+            "type": "string",
+            "minLength": 1
+          },
+          "programArguments": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "environment": {
+            "default": {},
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "workingDirectory": {
+            "type": "string",
+            "minLength": 1
+          },
+          "runAtLoad": {
+            "type": "boolean"
+          },
+          "keepAlive": {
+            "type": "boolean"
+          },
+          "standardOutPath": {
+            "type": "string",
+            "minLength": 1
+          },
+          "standardErrorPath": {
+            "type": "string",
+            "minLength": 1
+          },
+          "health": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "process",
+                  "http"
+                ]
+              },
+              "intervalSeconds": {
+                "default": 30,
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
+              },
+              "timeoutSeconds": {
+                "default": 5,
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 9007199254740991
+              },
+              "url": {
+                "type": "string",
+                "format": "uri"
+              }
+            },
+            "required": [
+              "type",
+              "intervalSeconds",
+              "timeoutSeconds"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "label",
+          "disabled",
+          "environment"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "namespace",
+    "owner",
+    "services"
+  ],
+  "additionalProperties": false
+}
