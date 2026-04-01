@@ -154,3 +154,7 @@ npm run schema:generate
 npm run typecheck
 npm test
 ```
+
+## OpenCode skills
+
+- `svc` onboarding and migration skill: `.opencode/skills/svc-migration/SKILL.md`
