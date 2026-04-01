@@ -6,9 +6,9 @@ import { runImportCommand } from "./import.ts";
 
 async function createFixtureProject(): Promise<string> {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "svc-import-test-"));
-  await fs.mkdir(path.join(dir, "ops/launchd/namespaces"), { recursive: true });
+  await fs.mkdir(path.join(dir, "namespaces"), { recursive: true });
   await fs.writeFile(
-    path.join(dir, "ops/launchd/root.yaml"),
+    path.join(dir, "config.yaml"),
     `schemaVersion: "1"\nmanagedBy: svc\nownershipPrefixes: []\ndefaults:\n  domain: gui\nnamespaces: {}\n`,
     "utf8"
   );
@@ -52,13 +52,13 @@ describe("runImportCommand", () => {
 
     const parsed = JSON.parse(output) as { labels: string[]; wrote: string[] };
     expect(parsed.labels).toEqual(["com.example.live-log-server"]);
-    expect(parsed.wrote).toEqual(["ops/launchd/root.yaml", "ops/launchd/namespaces/kristian.yaml"]);
+    expect(parsed.wrote).toEqual(["config.yaml", "namespaces/kristian.yaml"]);
 
-    const namespaceYaml = await fs.readFile(path.join(cwd, "ops/launchd/namespaces/kristian.yaml"), "utf8");
+    const namespaceYaml = await fs.readFile(path.join(cwd, "namespaces/kristian.yaml"), "utf8");
     expect(namespaceYaml).toContain("namespace: kristian");
     expect(namespaceYaml).toContain("label: com.example.live-log-server");
 
-    const rootYaml = await fs.readFile(path.join(cwd, "ops/launchd/root.yaml"), "utf8");
+    const rootYaml = await fs.readFile(path.join(cwd, "config.yaml"), "utf8");
     expect(rootYaml).toContain("com.example.");
     expect(rootYaml).toContain("kristian:");
   });
@@ -93,6 +93,6 @@ describe("runImportCommand", () => {
     expect(parsed.dryRun).toBe(true);
     expect(parsed.wrote).toEqual([]);
 
-    await expect(fs.stat(path.join(cwd, "ops/launchd/namespaces/kristian.yaml"))).rejects.toBeTruthy();
+    await expect(fs.stat(path.join(cwd, "namespaces/kristian.yaml"))).rejects.toBeTruthy();
   });
 });

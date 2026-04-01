@@ -39,7 +39,7 @@ export async function runImportCommand(
   const cwd = options.cwd ?? process.cwd();
   const merged = { ...defaultDeps, ...deps };
   const launchAgentsDir = path.join(merged.homeDir, "Library", "LaunchAgents");
-  const { rootPath, namespaceDir } = await resolveConfigPaths(cwd);
+  const { configPath, namespaceDir } = await resolveConfigPaths(cwd);
   const namespacePath = path.join(namespaceDir, `${options.namespace}.yaml`);
 
   const prefixes = options.prefix ?? [];
@@ -48,7 +48,7 @@ export async function runImportCommand(
     .map((job) => mapJobToService(job, merged.userName))
     .sort((a, b) => a.label.localeCompare(b.label));
 
-  const root = await loadRootConfig(rootPath);
+  const root = await loadRootConfig(configPath);
   const namespaces = await loadNamespaceConfigs(namespaceDir);
   const existing = namespaces.find((ns) => ns.namespace === options.namespace);
 
@@ -75,7 +75,7 @@ export async function runImportCommand(
   if (!options.dryRun) {
     await fs.mkdir(namespaceDir, { recursive: true });
     await fs.writeFile(namespacePath, stringify(namespaceDocument, { lineWidth: 0 }), "utf8");
-    await fs.writeFile(rootPath, stringify(nextRoot, { lineWidth: 0 }), "utf8");
+    await fs.writeFile(configPath, stringify(nextRoot, { lineWidth: 0 }), "utf8");
   }
 
   return JSON.stringify(
@@ -86,7 +86,7 @@ export async function runImportCommand(
       wrote: options.dryRun
         ? []
         : [
-            path.relative(cwd, rootPath),
+            path.relative(cwd, configPath),
             path.relative(cwd, namespacePath)
           ]
     },
@@ -95,26 +95,18 @@ export async function runImportCommand(
   );
 }
 
-async function resolveConfigPaths(cwd: string): Promise<{ rootPath: string; namespaceDir: string }> {
-  const modernRoot = path.join(cwd, "root.yaml");
-  if (await pathExists(modernRoot)) {
+async function resolveConfigPaths(cwd: string): Promise<{ configPath: string; namespaceDir: string }> {
+  const localConfig = path.join(cwd, "config.yaml");
+  if (await pathExists(localConfig)) {
     return {
-      rootPath: modernRoot,
+      configPath: localConfig,
       namespaceDir: path.join(cwd, "namespaces")
-    };
-  }
-
-  const legacyRoot = path.join(cwd, "ops/launchd/root.yaml");
-  if (await pathExists(legacyRoot)) {
-    return {
-      rootPath: legacyRoot,
-      namespaceDir: path.join(cwd, "ops/launchd/namespaces")
     };
   }
 
   const baseDir = path.join(os.homedir(), ".config", "svc");
   return {
-    rootPath: path.join(baseDir, "root.yaml"),
+    configPath: path.join(baseDir, "config.yaml"),
     namespaceDir: path.join(baseDir, "namespaces")
   };
 }

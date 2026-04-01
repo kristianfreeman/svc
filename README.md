@@ -30,14 +30,13 @@ Raw `launchctl` works, but gets messy fast:
 
 ```text
 ~/.config/svc/
-  root.yaml
+  config.yaml
   namespaces/
     personal.yaml
     side-projects.yaml
 ```
 
-If run from a directory containing `root.yaml`, it uses local files.
-Legacy `ops/launchd/*` paths are still recognized for migration compatibility.
+If run from a directory containing `config.yaml`, it uses local files.
 
 ## First principles
 
@@ -55,7 +54,7 @@ Legacy `ops/launchd/*` paths are still recognized for migration compatibility.
 
 ## Real-looking example
 
-`~/.config/svc/root.yaml`
+`~/.config/svc/config.yaml`
 
 ```yaml
 schemaVersion: "1"

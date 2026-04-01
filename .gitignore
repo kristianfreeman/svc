@@ -5,6 +5,5 @@ coverage
 .DS_Store
 
 # Local runtime config
-/root.yaml
+/config.yaml
 /namespaces/
-/ops/launchd/

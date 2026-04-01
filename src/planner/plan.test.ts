@@ -4,7 +4,7 @@ import { loadDesiredState } from "../config/load.ts";
 import { buildDesiredServices } from "./desired.ts";
 import { buildPlan } from "./plan.ts";
 
-const validScenario = path.resolve(process.cwd(), "src/config/fixtures/scenarios/valid");
+const validScenario = path.resolve(process.cwd(), "src/config/fixtures/scenarios/valid/ops/launchd");
 
 async function firstDesired() {
   const desired = buildDesiredServices(await loadDesiredState({ cwd: validScenario }))[0];

@@ -12,10 +12,8 @@ import {
   type ServiceConfig
 } from "./model.ts";
 
-const MODERN_ROOT_PATH = "root.yaml";
-const MODERN_NAMESPACE_DIR = "namespaces";
-const LEGACY_ROOT_PATH = "ops/launchd/root.yaml";
-const LEGACY_NAMESPACE_DIR = "ops/launchd/namespaces";
+const CONFIG_FILE = "config.yaml";
+const NAMESPACE_DIR = "namespaces";
 const GLOBAL_CONFIG_DIR = path.join(os.homedir(), ".config", "svc");
 
 export interface DesiredState {
@@ -38,9 +36,9 @@ export interface LoadConfigOptions {
 
 export async function loadDesiredState(options: LoadConfigOptions = {}): Promise<DesiredState> {
   const cwd = options.cwd ?? process.cwd();
-  const { rootPath, namespaceDir } = await resolveConfigPaths(options, cwd);
+  const { configPath, namespaceDir } = await resolveConfigPaths(options, cwd);
 
-  const root = await loadRootConfig(rootPath);
+  const root = await loadRootConfig(configPath);
   const allNamespaces = await loadNamespaceConfigs(namespaceDir);
 
   const filteredNamespaces = filterNamespaces(root, allNamespaces, options);
@@ -62,29 +60,25 @@ export async function loadDesiredState(options: LoadConfigOptions = {}): Promise
 async function resolveConfigPaths(
   options: LoadConfigOptions,
   cwd: string
-): Promise<{ rootPath: string; namespaceDir: string }> {
+): Promise<{ configPath: string; namespaceDir: string }> {
   if (options.rootConfigPath || options.namespaceDir) {
     return {
-      rootPath: path.resolve(cwd, options.rootConfigPath ?? MODERN_ROOT_PATH),
-      namespaceDir: path.resolve(cwd, options.namespaceDir ?? MODERN_NAMESPACE_DIR)
+      configPath: path.resolve(cwd, options.rootConfigPath ?? CONFIG_FILE),
+      namespaceDir: path.resolve(cwd, options.namespaceDir ?? NAMESPACE_DIR)
     };
   }
 
-  const modernRoot = path.resolve(cwd, MODERN_ROOT_PATH);
-  const modernNamespaces = path.resolve(cwd, MODERN_NAMESPACE_DIR);
-  if (await pathExists(modernRoot)) {
-    return { rootPath: modernRoot, namespaceDir: modernNamespaces };
-  }
-
-  const legacyRoot = path.resolve(cwd, LEGACY_ROOT_PATH);
-  const legacyNamespaces = path.resolve(cwd, LEGACY_NAMESPACE_DIR);
-  if (await pathExists(legacyRoot)) {
-    return { rootPath: legacyRoot, namespaceDir: legacyNamespaces };
+  const localConfig = path.resolve(cwd, CONFIG_FILE);
+  if (await pathExists(localConfig)) {
+    return {
+      configPath: localConfig,
+      namespaceDir: path.resolve(cwd, NAMESPACE_DIR)
+    };
   }
 
   return {
-    rootPath: path.join(GLOBAL_CONFIG_DIR, MODERN_ROOT_PATH),
-    namespaceDir: path.join(GLOBAL_CONFIG_DIR, MODERN_NAMESPACE_DIR)
+    configPath: path.join(GLOBAL_CONFIG_DIR, CONFIG_FILE),
+    namespaceDir: path.join(GLOBAL_CONFIG_DIR, NAMESPACE_DIR)
   };
 }
 
@@ -98,11 +92,11 @@ async function pathExists(filePath: string): Promise<boolean> {
 }
 
 export async function loadRootConfig(rootPath: string): Promise<RootConfig> {
-  const raw = await readYamlFile(rootPath, "root config");
+  const raw = await readYamlFile(rootPath, "config");
   try {
     return rootConfigSchema.parse(raw);
   } catch (error) {
-    throw zodAsSvcError(error, `Invalid root config at ${rootPath}`);
+    throw zodAsSvcError(error, `Invalid config at ${rootPath}`);
   }
 }
 

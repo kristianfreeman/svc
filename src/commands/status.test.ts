@@ -4,7 +4,7 @@ import path from "node:path";
 import { describe, expect, test } from "vitest";
 import { runStatusCommand } from "./status.ts";
 
-const validScenario = path.resolve(process.cwd(), "src/config/fixtures/scenarios/valid");
+const validScenario = path.resolve(process.cwd(), "src/config/fixtures/scenarios/valid/ops/launchd");
 
 async function tempStatePath(): Promise<string> {
   const dir = await fs.mkdtemp(path.join(os.tmpdir(), "svc-status-test-"));

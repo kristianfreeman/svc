@@ -5,7 +5,7 @@ import { loadDesiredState } from "./load.ts";
 const fixturesDir = path.resolve(process.cwd(), "src/config/fixtures/scenarios");
 
 function scenarioPath(name: string): string {
-  return path.join(fixturesDir, name);
+  return path.join(fixturesDir, name, "ops/launchd");
 }
 
 describe("loadDesiredState", () => {
@@ -22,7 +22,7 @@ describe("loadDesiredState", () => {
   });
 
   test("rejects unknown keys", async () => {
-    await expect(loadDesiredState({ cwd: scenarioPath("unknown-key") })).rejects.toThrow("Invalid root config");
+    await expect(loadDesiredState({ cwd: scenarioPath("unknown-key") })).rejects.toThrow("Invalid config");
   });
 
   test("rejects duplicate labels across namespaces", async () => {
@@ -38,7 +38,7 @@ describe("loadDesiredState", () => {
   });
 
   test.each([
-    ["unknown-key", "Invalid root config"],
+    ["unknown-key", "Invalid config"],
     ["duplicate-label", "Cross-namespace validation failed"],
     ["invalid-health-url", "Invalid namespace config"],
     ["missing-program", "Semantic validation failed"]

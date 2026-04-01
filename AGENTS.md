@@ -22,7 +22,7 @@
 
 ## Managed State Model
 
-- Desired state lives in `ops/launchd/root.yaml` and `ops/launchd/namespaces/*.yaml`.
+- Desired state lives in `config.yaml` and `namespaces/*.yaml`.
 - Managed records track ownership and hash-based convergence.
 - Runtime jobs that already exist may be adopted into managed state during migration.
 

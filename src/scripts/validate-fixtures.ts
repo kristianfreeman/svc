@@ -17,7 +17,7 @@ const invalidScenarios = [
 
 for (const scenario of validScenarios) {
   await execFileAsync("npx", ["tsx", cliPath, "validate", "--all"], {
-    cwd: path.join(scenariosDir, scenario)
+    cwd: path.join(scenariosDir, scenario, "ops/launchd")
   });
   console.log(`fixture ${scenario}: valid as expected`);
 }
@@ -26,7 +26,7 @@ for (const scenario of invalidScenarios) {
   let failed = false;
   try {
     await execFileAsync("npx", ["tsx", cliPath, "validate", "--all"], {
-      cwd: path.join(scenariosDir, scenario)
+      cwd: path.join(scenariosDir, scenario, "ops/launchd")
     });
   } catch {
     failed = true;

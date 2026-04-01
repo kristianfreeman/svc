@@ -4,7 +4,7 @@ import path from "node:path";
 import { describe, expect, test } from "vitest";
 import { runApplyCommand } from "./apply.ts";
 
-const validScenario = path.resolve(process.cwd(), "src/config/fixtures/scenarios/valid");
+const validScenario = path.resolve(process.cwd(), "src/config/fixtures/scenarios/valid/ops/launchd");
 
 function makeAdapter(runtimePresent = false) {
   const calls: string[] = [];
